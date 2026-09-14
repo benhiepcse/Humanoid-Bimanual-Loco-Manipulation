@@ -6,8 +6,8 @@
 - **Tên project:** Humanoid Bimanual Loco-Manipulation & Long-Horizon Autonomy
 - **Thời gian:** Tuần 61–68, từ **08/11/2027 đến 02/01/2028**
 - **Hướng phát triển:** Humanoid AI Perception, VLM/VLA kết hợp Humanoid Whole-Body Control, Grasping & Simulation
-- **Thành viên A:** Object/affordance perception, language grounding, demonstration data, ACT/VLA policies, failure detection và AI evaluation
-- **Thành viên B:** Grasp mechanics, arm/hand planning, force control, bimanual coordination, loco-manipulation, task executive và control evaluation
+- **Hiệp (Thành viên A):** Object/affordance perception, language grounding, demonstration data, ACT/VLA policies, failure detection và AI evaluation
+- **Thông (Thành viên B):** Grasp mechanics, arm/hand planning, force control, bimanual coordination, loco-manipulation, task executive và control evaluation
 - **Điểm xuất phát:** Kế thừa P03 scene/language grounding, P04 VLA skill interface, P05 3D object/human state, P06 state/contact/dynamics, P07 locomotion/WBC và P08 hardware-ready safety/runtime contracts.
 
 ## 2. Bài toán, công dụng và phạm vi
@@ -418,6 +418,8 @@ p09_humanoid_bimanual_loco_manipulation_long_horizon_autonomy/
 
 ## 5. Backlog theo thứ tự phát triển
 
+> **Quy ước nguồn học:** Chỉ các trích dẫn vốn là file PDF/PPTX của Hiệp được thay bằng bài giảng hoặc video YouTube tương ứng. Các nguồn đã là đường link được giữ nguyên. Toàn bộ video YouTube thay thế trong P09 là video độc lập theo từng chủ đề, vì vậy học toàn bộ video và không cần mốc thời gian trong một khóa học dài.
+
 ### [P09-I01] — Khóa mission, skill, grasp, plan và outcome contracts
 
 - **Thực hiện:** Cả hai.
@@ -434,11 +436,11 @@ p09_humanoid_bimanual_loco_manipulation_long_horizon_autonomy/
 
 ### [P09-A01] — Object, affordance và grasp-region perception
 
-- **Thực hiện:** Thành viên A.
+- **Thực hiện:** Hiệp.
 - **Mô tả:** Chuyển P05 masks, 3D boxes và 6D poses thành manipulation object state; dự đoán handle/surface/container/openable/support affordances và candidate approach regions. Classical geometry là baseline; learned output mang confidence/OOD và không bịa geometry khi depth/pose stale.
 - **Kiến thức:**
   - 3D object/6D pose — các artefact P05 đã nghiệm thu.
-  - CNN/feature learning — `AI-ADL-CH01.1.pdf`–`AI-ADL-CH02.3.pdf`.
+  - CNN/feature learning — [Stanford CS231n — CNN Architectures](https://www.youtube.com/watch?v=DAOcjicFr1Y) — học toàn bộ video.
   - Grasp dataset/evaluation bổ sung — [GraspNet-1Billion](https://graspnet.net/).
 - **Input mẫu:** RGB-D + object mask/pose/mesh + hand geometry.
 - **Output mẫu:** object ID, affordance masks, approach vectors, grasp regions, confidence, covariance and age.
@@ -451,7 +453,7 @@ p09_humanoid_bimanual_loco_manipulation_long_horizon_autonomy/
 
 ### [P09-B01] — Grasp mechanics, contact và force/form closure
 
-- **Thực hiện:** Thành viên B.
+- **Thực hiện:** Thông.
 - **Mô tả:** Mô hình hóa contact types, friction cones, grasp map, wrench space, force/form closure và grasp quality cho one/two-hand grasps. Kiểm tra object mass/friction uncertainty và gripper width/force limits trước khi candidate được coi là mechanically feasible.
 - **Kiến thức:**
   - Grasping and Manipulation — [Modern Robotics, Chapter 12](https://modernrobotics.northwestern.edu/nu-gm-book-resource/chapter-12-grasping-and-manipulation/).
@@ -476,7 +478,7 @@ p09_humanoid_bimanual_loco_manipulation_long_horizon_autonomy/
 
 ### [P09-B02] — Hand calibration và deterministic grasp primitive
 
-- **Thực hiện:** Thành viên B.
+- **Thực hiện:** Thông.
 - **Mô tả:** Hiệu chỉnh wrist-to-hand/end-effector transform, joint zero, open/close width and force relationship; tạo approach–close–verify–lift–release state machine. Contact/slip/force/time guards ngăn close/lift vô điều kiện.
 - **Kiến thức:**
   - Kinematics and end-effector frames — [Modern Robotics, Chapters 3–6](https://modernrobotics.northwestern.edu/nu-gm-book-resource/).
@@ -490,7 +492,7 @@ p09_humanoid_bimanual_loco_manipulation_long_horizon_autonomy/
 
 ### [P09-B03] — Arm motion planning, IK và collision checking
 
-- **Thực hiện:** Thành viên B.
+- **Thực hiện:** Thông.
 - **Mô tả:** Xây pregrasp, approach, retreat and place plans using MoveIt 2/OMPL or equivalent. Validate joint limits, singularity, self/environment collision, attached-object geometry and scene version; execution phải revalidate trước movement.
 - **Kiến thức:**
   - Motion planning — [Modern Robotics, Chapter 10](https://modernrobotics.northwestern.edu/nu-gm-book-resource/chapter-10-motion-planning/).
@@ -504,11 +506,11 @@ p09_humanoid_bimanual_loco_manipulation_long_horizon_autonomy/
 
 ### [P09-A02] — Referring-object VLM grounding và ambiguity handling
 
-- **Thực hiện:** Thành viên A.
+- **Thực hiện:** Hiệp.
 - **Mô tả:** Ground instruction phrases into stable scene object/region IDs using rules/CLIP baseline and VLM adapter. Test color, category, spatial relations, negation and multiple similar objects; ambiguity module must request clarification or safe abort.
 - **Kiến thức:**
-  - CLIP — `2103.00020.pdf`.
-  - Vision-language reasoning — `2301.12597.pdf`, `2303.03378.pdf`.
+  - CLIP và image–text representation — [Stanford CS231n — Lecture 16: Vision and Language](https://www.youtube.com/watch?v=mQOK0Mfyrkk) — học toàn bộ video.
+  - Vision-language reasoning và multimodal model — [Stanford CS25 — From Language Models to Native Multimodal Intelligence](https://www.youtube.com/watch?v=NDdc39KYqDU) — học toàn bộ video.
   - Image-text-to-text inference — [Hugging Face Transformers](https://huggingface.co/docs/transformers/tasks/image_text_to_text).
 - **Input mẫu:** instruction + scene crop/object list/relations.
 - **Output mẫu:** target IDs, attributes/relations evidence, confidence, ambiguity candidates and scene version.
@@ -532,7 +534,7 @@ p09_humanoid_bimanual_loco_manipulation_long_horizon_autonomy/
 
 ### [P09-B04] — Whole-body mobile manipulation và base repositioning
 
-- **Thực hiện:** Thành viên B.
+- **Thực hiện:** Thông.
 - **Mô tả:** Chọn base pose/stance để tăng reachability/manipulability and stability, then coordinate P07 locomotion with arm/posture tasks. Walking and manipulation phases have explicit handoff; object load updates COM/dynamics assumptions.
 - **Kiến thức:**
   - Whole-body task-space control — [TSID official repository](https://github.com/stack-of-tasks/tsid).
@@ -546,7 +548,7 @@ p09_humanoid_bimanual_loco_manipulation_long_horizon_autonomy/
 
 ### [P09-B05] — Bimanual coordination và load sharing
 
-- **Thực hiện:** Thành viên B.
+- **Thực hiện:** Thông.
 - **Mô tả:** Xây relative hand-pose constraint, object frame, internal-force/load-sharing objectives and synchronized contact state machine. Detect asymmetric contact, slip, overconstraint and grasp loss; define safe lower/release behavior.
 - **Kiến thức:**
   - Multiple contacts/force closure — [Modern Robotics, Chapter 12](https://modernrobotics.northwestern.edu/nu-gm-book-resource/chapter-12-grasping-and-manipulation/).
@@ -560,12 +562,12 @@ p09_humanoid_bimanual_loco_manipulation_long_horizon_autonomy/
 
 ### [P09-A03] — Demonstration episode schema và quality pipeline
 
-- **Thực hiện:** Thành viên A.
+- **Thực hiện:** Hiệp.
 - **Mô tả:** Chuẩn hóa episodes gồm synchronized images, language, robot state, actions, contacts, object/scene IDs, success/failure and provenance. Kiểm tra timestamp gaps, teleoperation interventions, action saturation, calibration/model versions and task/object/environment split leakage.
 - **Kiến thức:**
-  - Data preparation/evaluation — `AI-BML-CH01.1.pdf`, `AI-BML-CH01.2.pdf`.
+  - Data preparation, split và evaluation — [Stanford CS229 — Data Splits, Models & Cross-Validation](https://www.youtube.com/watch?v=rjbkWSTjHzM) và [Stanford CS229 — Debugging ML Models and Error Analysis](https://www.youtube.com/watch?v=ORrStCArmP4) — học toàn bộ hai video.
   - Robot-learning dataset format — [LeRobot datasets documentation](https://huggingface.co/docs/lerobot/lerobot-dataset-v3).
-  - Open X-Embodiment — `2310.08864.pdf`.
+  - Open X-Embodiment và RT-X — [Open X-Embodiment: Robotic Learning Datasets and RT-X Models](https://www.youtube.com/watch?v=umySOgmrPpI) — học toàn bộ video.
 - **Các file thực hiện:**
   - `src/p09_core/learning/demonstrations.py`, `observations.py`, `actions.py` — episode validation and canonical schema.
   - `data/episode_manifest.json`, `split_manifest.json`, `scenario_catalog.yaml` — provenance and splits.
@@ -586,7 +588,7 @@ p09_humanoid_bimanual_loco_manipulation_long_horizon_autonomy/
 
 ### [P09-A04] — ACT action-chunking imitation baseline
 
-- **Thực hiện:** Thành viên A.
+- **Thực hiện:** Hiệp.
 - **Mô tả:** Train ACT-style policy on validated demonstrations to predict bounded action chunks for pick/place and bimanual primitives. Compare chunk size, temporal aggregation and observation history; evaluate offline loss plus closed-loop success and compounding error.
 - **Kiến thức:**
   - ACT policy — [LeRobot ACT documentation](https://huggingface.co/docs/lerobot/act).
@@ -600,7 +602,7 @@ p09_humanoid_bimanual_loco_manipulation_long_horizon_autonomy/
 
 ### [P09-B06] — Contact-rich force/impedance manipulation
 
-- **Thực hiện:** Thành viên B.
+- **Thực hiện:** Thông.
 - **Mô tả:** Triển khai hybrid position–force/impedance primitive cho drawer or constrained insertion. Define contact direction, force target, compliance, approach/search/insert/retreat phases and force/energy/timeout guards.
 - **Kiến thức:**
   - Force and hybrid motion-force control — [Modern Robotics, Chapter 11](https://modernrobotics.northwestern.edu/nu-gm-book-resource/chapter-11-robot-control/).
@@ -614,13 +616,13 @@ p09_humanoid_bimanual_loco_manipulation_long_horizon_autonomy/
 
 ### [P09-A05] — VLA adapter benchmark: SmolVLA, OpenVLA và Octo
 
-- **Thực hiện:** Thành viên A.
+- **Thực hiện:** Hiệp.
 - **Mô tả:** Tạo common observation/action adapter and benchmark at least two feasible VLA families; SmolVLA is preferred for local resource constraints, while OpenVLA/Octo can be offline/reference. Map each action convention to robot frames/units/bounds and report latency, memory, success, OOD and embodiment mismatch.
 - **Kiến thức:**
   - SmolVLA — [LeRobot SmolVLA documentation](https://huggingface.co/docs/lerobot/smolvla).
-  - OpenVLA — `2406.09246.pdf`, [official project](https://openvla.github.io/).
-  - Octo — `2405.12213.pdf`.
-  - Open X-Embodiment — `2310.08864.pdf`.
+  - OpenVLA — [LeRobot Research Presentation #5 by Moo Jin Kim](https://www.youtube.com/watch?v=-0s0v3q7mBk) — học toàn bộ video; giữ nguyên [official project](https://openvla.github.io/).
+  - Octo — [Octo: An Open-Source Generalist Robot Policy](https://www.youtube.com/watch?v=99667VDGWMg) — học toàn bộ video.
+  - Open X-Embodiment — [Open X-Embodiment: Robotic Learning Datasets and RT-X Models](https://www.youtube.com/watch?v=umySOgmrPpI) — học toàn bộ video.
 - **Các file thực hiện:**
   - `src/p09_core/learning/vla_adapter.py`, `observations.py`, `actions.py`, `uncertainty.py` — normalized adapters and health.
   - `configs/policy.yaml`, `models/registry.json`, `policies/registry.json` — exact model/action versions.
@@ -630,7 +632,7 @@ p09_humanoid_bimanual_loco_manipulation_long_horizon_autonomy/
 
 ### [P09-B07] — Loco-manipulation plan và dynamic task transition
 
-- **Thực hiện:** Thành viên B.
+- **Thực hiện:** Thông.
 - **Mô tả:** Compose navigation, stance selection, reach, grasp, carry and place while maintaining support/contact/load constraints. Replan base/feet/arms when scene or object pose changes; prohibit walking with object outside approved load/grasp envelope.
 - **Kiến thức:**
   - Motion planning and trajectory generation — [Modern Robotics, Chapters 9–10](https://modernrobotics.northwestern.edu/nu-gm-book-resource/).
@@ -655,7 +657,7 @@ p09_humanoid_bimanual_loco_manipulation_long_horizon_autonomy/
 
 ### [P09-B08] — Behavior-tree mission executive
 
-- **Thực hiện:** Thành viên B.
+- **Thực hiện:** Thông.
 - **Mô tả:** Implement behavior tree or equivalent explicit state machine with predicates, timeouts, retries, preemption and compensation actions. Nodes call ROS actions/services and persist causal mission state; restart cannot repeat dangerous action without reconciliation.
 - **Kiến thức:**
   - BehaviorTree.CPP — [official documentation](https://www.behaviortree.dev/docs/).
@@ -669,12 +671,12 @@ p09_humanoid_bimanual_loco_manipulation_long_horizon_autonomy/
 
 ### [P09-A06] — Outcome/failure detection và uncertainty-aware recovery signal
 
-- **Thực hiện:** Thành viên A.
+- **Thực hiện:** Hiệp.
 - **Mô tả:** Detect wrong object, missed grasp, slip, dropped object, failed placement, blocked view/path and goal-state mismatch from perception/contact/execution signals. Calibrate uncertainty and expose failure class/evidence; do not let VLM verbal confidence replace physical predicates.
 - **Kiến thức:**
-  - Classification/evaluation — `AI-BML-CH01.2.pdf`, `AI-BML-CH04.1.pdf`, `AI-BML-CH04.2.pdf`.
-  - HMM/temporal states — `AI-AML-CH01.1.pdf`, `AI-AML-CH01.2.pdf`.
-  - RNN temporal modeling — `AI-ADL-CH03.1.pdf`–`AI-ADL-CH03.3.pdf`.
+  - Classification và evaluation — [Stanford CS229 — Logistic Regression](https://www.youtube.com/watch?v=het9HFqo1TQ) và [Stanford CS229 — Debugging ML Models and Error Analysis](https://www.youtube.com/watch?v=ORrStCArmP4) — học toàn bộ hai video.
+  - HMM và temporal state inference — [University of Waterloo CS480/680 — Hidden Markov Models](https://www.youtube.com/watch?v=9EHWTHJkqUY) — học toàn bộ video.
+  - RNN temporal modeling — [Stanford CS231n — Recurrent Neural Networks](https://www.youtube.com/watch?v=6niqTuYFZLQ) — học toàn bộ video.
 - **Các file thực hiện:**
   - `src/p09_core/perception/outcome_verifier.py`, `learning/uncertainty.py` — physical/learned outcome evidence.
   - `ros2_ws/src/p09_perception/p09_perception/outcome_node.py` — ROS status.
@@ -684,7 +686,7 @@ p09_humanoid_bimanual_loco_manipulation_long_horizon_autonomy/
 
 ### [P09-B09] — Reactive replanning, recovery và safe abort
 
-- **Thực hiện:** Thành viên B.
+- **Thực hiện:** Thông.
 - **Mô tả:** Define recovery tree: re-observe, alternate grasp, base reposition, trajectory replan, controlled lower/release, clear workspace and safe abort. Recovery uses updated scene/contact state, has attempt/force/time budgets and never retries identical invalid plan blindly.
 - **Kiến thức:**
   - Motion replanning — [MoveIt 2 Planning Scene Monitor](https://moveit.picknik.ai/main/doc/examples/planning_scene_monitor/planning_scene_monitor_tutorial.html).
@@ -709,12 +711,15 @@ p09_humanoid_bimanual_loco_manipulation_long_horizon_autonomy/
 
 ### [P09-A07] — Final AI grounding, policy và recovery benchmark
 
-- **Thực hiện:** Thành viên A.
+- **Thực hiện:** Hiệp.
 - **Mô tả:** Report grounding/ambiguity, affordance/grasp proposal, ACT/VLA policy, outcome/failure detection, calibration/OOD, latency/memory and ablations. Separate offline action error from closed-loop task success and long-horizon mission success.
 - **Kiến thức:**
-  - Model evaluation — `AI-BML-CH01.2.pdf`.
-  - VLA references — `2212.06817.pdf`, `rt2(1).pdf`, `2310.08864.pdf`, `2405.12213.pdf`, `2406.09246.pdf`, `pi0.pdf`.
-  - Responsible evaluation — `AI-GenAI-CH04.1.pdf`–`AI-GenAI-CH05.2.pdf`.
+  - Model evaluation — [Stanford CS229 — Debugging ML Models and Error Analysis](https://www.youtube.com/watch?v=ORrStCArmP4) — học toàn bộ video.
+  - RT-1, RT-2, OpenVLA và π₀ — [Vision Language Action Models — OpenVLA, π₀, RT-2 and Gemini Robotics](https://www.youtube.com/watch?v=iNS7zaxWvJ8) — học toàn bộ video.
+  - Open X-Embodiment — [Open X-Embodiment: Robotic Learning Datasets and RT-X Models](https://www.youtube.com/watch?v=umySOgmrPpI) — học toàn bộ video.
+  - Octo — [Octo: An Open-Source Generalist Robot Policy](https://www.youtube.com/watch?v=99667VDGWMg) — học toàn bộ video.
+  - OpenVLA chuyên sâu — [LeRobot Research Presentation #5 by Moo Jin Kim](https://www.youtube.com/watch?v=-0s0v3q7mBk) — học toàn bộ video.
+  - Responsible evaluation — [Stanford CS231n — Human-Centered AI](https://www.youtube.com/watch?v=g8UaBfj6Sh8) — học toàn bộ video.
 - **Các file thực hiện:**
   - `src/p09_core/evaluation/grounding.py`, `grasping.py`, `manipulation.py`, `mission.py`, `report.py` — final metrics.
   - `docs/vla_policy.md`, `docs/verification.md`, `docs/safety_case.md` — model cards, failures and limits.
@@ -724,7 +729,7 @@ p09_humanoid_bimanual_loco_manipulation_long_horizon_autonomy/
 
 ### [P09-B10] — Final grasping, bimanual và loco-manipulation control benchmark
 
-- **Thực hiện:** Thành viên B.
+- **Thực hiện:** Thông.
 - **Mô tả:** Benchmark grasp mechanics, planning, trajectory execution, force/contact, bimanual load sharing, WBC, loco-manipulation and recovery. Report collision/limit margins, force/impulse, slip/drop, plan/solve latency, execution error and safe-abort behavior.
 - **Kiến thức:**
   - Modern Robotics Chapters 8–12 — [official course resources](https://modernrobotics.northwestern.edu/nu-gm-book-resource/).
@@ -748,16 +753,16 @@ p09_humanoid_bimanual_loco_manipulation_long_horizon_autonomy/
 
 ## 6. Lịch tuần 61–68
 
-| Tuần | Thời gian | Kiến thức cần hoàn thành | Thành viên A | Thành viên B | Tích hợp/Deliverable | Giờ dự kiến |
+| Tuần | Thời gian | Kiến thức cần hoàn thành | Hiệp | Thông | Tích hợp/Deliverable | Giờ dự kiến |
 |---:|---|---|---|---|---|---|
-| 61 | 08/11–14/11/2027 | Contracts, affordances, grasp/contact mechanics | A01 | B01 | I01, I02; manipulation-ready scene and grasps | A: 24h, B: 26h |
-| 62 | 15/11–21/11/2027 | Hand calibration, grasp primitive, arm planning, VLM grounding | A02 | B02, B03 | I03; language-grounded pick/place | A: 26h, B: 30h |
-| 63 | 22/11–28/11/2027 | Whole-body mobile manipulation, bimanual control, episode schema | A03 | B04, B05 | I04; validated expert demonstrations | A: 24h, B: 30h |
-| 64 | 29/11–05/12/2027 | ACT imitation and contact-rich force control | A04 | B06 | ACT baseline + drawer/contact primitive | A: 28h, B: 26h |
-| 65 | 06/12–12/12/2027 | SmolVLA/OpenVLA/Octo adapters and loco-manipulation | A05 | B07 | I05; shielded VLA skill execution | A: 30h, B: 28h |
-| 66 | 13/12–19/12/2027 | Mission executive, failure detection and recovery | A06 | B08, B09 | Recovery-complete mission graph | A: 26h, B: 30h |
-| 67 | 20/12–26/12/2027 | Long-horizon holdout and frozen release candidate | A06 support | B09 support | I06; long-horizon RC | A: 22h, B: 22h |
-| 68 | 27/12/2027–02/01/2028 | Final AI/control benchmarks and capstone release | A07 | B10 | I07; P09 release | A: 28h, B: 28h |
+| 61 | 08/11–14/11/2027 | Contracts, affordances, grasp/contact mechanics | A01 | B01 | I01, I02; manipulation-ready scene and grasps | Hiệp: 24h, Thông: 26h |
+| 62 | 15/11–21/11/2027 | Hand calibration, grasp primitive, arm planning, VLM grounding | A02 | B02, B03 | I03; language-grounded pick/place | Hiệp: 26h, Thông: 30h |
+| 63 | 22/11–28/11/2027 | Whole-body mobile manipulation, bimanual control, episode schema | A03 | B04, B05 | I04; validated expert demonstrations | Hiệp: 24h, Thông: 30h |
+| 64 | 29/11–05/12/2027 | ACT imitation and contact-rich force control | A04 | B06 | ACT baseline + drawer/contact primitive | Hiệp: 28h, Thông: 26h |
+| 65 | 06/12–12/12/2027 | SmolVLA/OpenVLA/Octo adapters and loco-manipulation | A05 | B07 | I05; shielded VLA skill execution | Hiệp: 30h, Thông: 28h |
+| 66 | 13/12–19/12/2027 | Mission executive, failure detection and recovery | A06 | B08, B09 | Recovery-complete mission graph | Hiệp: 26h, Thông: 30h |
+| 67 | 20/12–26/12/2027 | Long-horizon holdout and frozen release candidate | A06 support | B09 support | I06; long-horizon RC | Hiệp: 22h, Thông: 22h |
+| 68 | 27/12/2027–02/01/2028 | Final AI/control benchmarks and capstone release | A07 | B10 | I07; P09 release | Hiệp: 28h, Thông: 28h |
 
 ### Điều kiện chuyển tuần
 
@@ -791,34 +796,34 @@ p09_humanoid_bimanual_loco_manipulation_long_horizon_autonomy/
 
 | Nguồn | Kiến thức | Task | Thành viên | Sản phẩm |
 |---|---|---|---|---|
-| `AI-BML-CH01.1.pdf`, `AI-BML-CH01.2.pdf` | Data/evaluation | A03, A06, A07 | A | Dataset and benchmark |
-| `AI-BML-CH04.1.pdf`, `AI-BML-CH04.2.pdf` | Failure classification | A06 | A | Outcome monitor |
-| `AI-AML-CH01.1.pdf`, `AI-AML-CH01.2.pdf` | Temporal/HMM state | A06 | A | Failure-state inference |
-| `AI-ADL-CH01.1.pdf`–`CH02.3.pdf` | CNN/features | A01 | A | Affordance model |
-| `AI-ADL-CH03.1.pdf`–`CH03.3.pdf` | Temporal models | A06 | A | Outcome sequence model |
-| `2103.00020.pdf` | CLIP | A02 | A | Referring-object baseline |
-| `2301.12597.pdf`, `2303.03378.pdf` | Vision-language reasoning | A02 | A | VLM grounder |
-| HF image-text-to-text | VLM inference | A02 | A | Runtime adapter |
-| Open X `2310.08864.pdf` + LeRobot datasets | Robot episode data | A03, A05 | A | Canonical dataset/action mappings |
-| LeRobot ACT | Action chunking | A04 | A | ACT policy |
-| SmolVLA docs | Small VLA | A05 | A | Local VLA adapter |
-| OpenVLA `2406.09246.pdf` + project | VLA | A05, A07 | A | OpenVLA benchmark |
-| Octo `2405.12213.pdf` | Generalist robot policy | A05, A07 | A | Octo reference |
-| RT-1 `2212.06817.pdf`, `rt2(1).pdf`, `pi0.pdf` | VLA development context | A07 | A | Comparative analysis |
-| `AI-GenAI-CH04.1.pdf`–`CH05.2.pdf` | Responsible evaluation | A07 | A | Safety/model cards |
-| GraspNet | Grasp data/evaluation | A01 | A | Grasp proposal baseline |
-| Modern Robotics Ch.12 | Grasp/contact/closure | B01, B05, B10 | B | Grasp/bimanual mechanics |
-| Modern Robotics Ch.3–6 | Frames/kinematics/IK | B02 | B | Hand calibration/primitive |
-| Modern Robotics Ch.9–11 | Planning/control/force | B03, B04, B06, B07 | B | Manipulation stack |
-| MoveIt Task Constructor/Planning Scene | Pick/place/replanning | B03, B09 | B | Arm planner/recovery |
-| TSID | Whole-body inverse dynamics | B04, B07 | B | Loco-manipulation WBC |
-| MIT Underactuated Contact | Contact-rich dynamics | B01, B06 | B | Force/contact control |
-| BehaviorTree.CPP + ROS 2 actions | Mission/recovery | I01, B08, B09 | Both/B | Mission executive |
-| P05–P08 artifacts | Scene/state/locomotion/runtime/safety | I01–I07 | Both | Integrated capstone |
+| [Stanford CS229 — Data Splits, Models & Cross-Validation](https://www.youtube.com/watch?v=rjbkWSTjHzM); [Debugging ML Models and Error Analysis](https://www.youtube.com/watch?v=ORrStCArmP4) | Data/evaluation | A03, A06, A07 | Hiệp | Dataset and benchmark |
+| [Stanford CS229 — Logistic Regression](https://www.youtube.com/watch?v=het9HFqo1TQ); [Debugging ML Models and Error Analysis](https://www.youtube.com/watch?v=ORrStCArmP4) | Failure classification | A06 | Hiệp | Outcome monitor |
+| [University of Waterloo CS480/680 — Hidden Markov Models](https://www.youtube.com/watch?v=9EHWTHJkqUY) | Temporal/HMM state | A06 | Hiệp | Failure-state inference |
+| [Stanford CS231n — CNN Architectures](https://www.youtube.com/watch?v=DAOcjicFr1Y) | CNN/features | A01 | Hiệp | Affordance model |
+| [Stanford CS231n — Recurrent Neural Networks](https://www.youtube.com/watch?v=6niqTuYFZLQ) | Temporal models | A06 | Hiệp | Outcome sequence model |
+| [Stanford CS231n — Vision and Language](https://www.youtube.com/watch?v=mQOK0Mfyrkk) | CLIP and image–text representation | A02 | Hiệp | Referring-object baseline |
+| [Stanford CS25 — From Language Models to Native Multimodal Intelligence](https://www.youtube.com/watch?v=NDdc39KYqDU) | Vision-language reasoning | A02 | Hiệp | VLM grounder |
+| [HF image-text-to-text](https://huggingface.co/docs/transformers/tasks/image_text_to_text) | VLM inference | A02 | Hiệp | Runtime adapter |
+| [Open X-Embodiment video](https://www.youtube.com/watch?v=umySOgmrPpI) + [LeRobot datasets](https://huggingface.co/docs/lerobot/lerobot-dataset-v3) | Robot episode data | A03, A05 | Hiệp | Canonical dataset/action mappings |
+| [LeRobot ACT](https://huggingface.co/docs/lerobot/act) | Action chunking | A04 | Hiệp | ACT policy |
+| [SmolVLA docs](https://huggingface.co/docs/lerobot/smolvla) | Small VLA | A05 | Hiệp | Local VLA adapter |
+| [OpenVLA — LeRobot Research Presentation](https://www.youtube.com/watch?v=-0s0v3q7mBk) + [official project](https://openvla.github.io/) | VLA | A05, A07 | Hiệp | OpenVLA benchmark |
+| [Octo: An Open-Source Generalist Robot Policy](https://www.youtube.com/watch?v=99667VDGWMg) | Generalist robot policy | A05, A07 | Hiệp | Octo reference |
+| [Vision Language Action Models — OpenVLA, π₀, RT-2 and Gemini Robotics](https://www.youtube.com/watch?v=iNS7zaxWvJ8) | RT-1/RT-2/OpenVLA/π₀ development context | A07 | Hiệp | Comparative analysis |
+| [Stanford CS231n — Human-Centered AI](https://www.youtube.com/watch?v=g8UaBfj6Sh8) | Responsible evaluation | A07 | Hiệp | Safety/model cards |
+| [GraspNet](https://graspnet.net/) | Grasp data/evaluation | A01 | Hiệp | Grasp proposal baseline |
+| [Modern Robotics Ch.12](https://modernrobotics.northwestern.edu/nu-gm-book-resource/chapter-12-grasping-and-manipulation/) | Grasp/contact/closure | B01, B05, B10 | Thông | Grasp/bimanual mechanics |
+| [Modern Robotics Ch.3–6](https://modernrobotics.northwestern.edu/nu-gm-book-resource/) | Frames/kinematics/IK | B02 | Thông | Hand calibration/primitive |
+| [Modern Robotics Ch.9–11](https://modernrobotics.northwestern.edu/nu-gm-book-resource/) | Planning/control/force | B03, B04, B06, B07 | Thông | Manipulation stack |
+| [MoveIt Task Constructor](https://moveit.picknik.ai/main/doc/tutorials/pick_and_place_with_moveit_task_constructor/pick_and_place_with_moveit_task_constructor.html) / [Planning Scene Monitor](https://moveit.picknik.ai/main/doc/examples/planning_scene_monitor/planning_scene_monitor_tutorial.html) | Pick/place/replanning | B03, B09 | Thông | Arm planner/recovery |
+| [TSID](https://github.com/stack-of-tasks/tsid) | Whole-body inverse dynamics | B04, B07 | Thông | Loco-manipulation WBC |
+| [MIT Underactuated Contact](https://underactuated.mit.edu/contact.html) | Contact-rich dynamics | B01, B06 | Thông | Force/contact control |
+| [BehaviorTree.CPP](https://www.behaviortree.dev/docs/) + [ROS 2 actions](https://docs.ros.org/en/jazzy/Tutorials/Intermediate/Writing-an-Action-Server-Client/Py.html) | Mission/recovery | I01, B08, B09 | Cả hai/Thông | Mission executive |
+| P05–P08 artifacts | Scene/state/locomotion/runtime/safety | I01–I07 | Cả hai | Integrated capstone |
 
 ### 8.1. Nguồn ngoài phạm vi
 
-- Các PDF VLM/VLA còn lại chỉ được dùng khi xác định chắc nội dung; không ép mọi paper vào P09 nếu trùng hoặc không liên quan trực tiếp.
+- Các nguồn VLM/VLA còn lại chỉ được dùng khi xác định chắc nội dung; không ép mọi paper hoặc video vào P09 nếu trùng hay không liên quan trực tiếp.
 - P09 không dạy lại sensor calibration, SLAM, state estimation, locomotion và real-time deployment; các phần đó được kế thừa từ P05–P08.
 
 ## 9. Phân loại backlog
